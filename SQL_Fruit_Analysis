@@ -1,3 +1,14 @@
+/*
+
+Cleaning Data in SQL Queries
+
+*/
+
+
+Select *
+From PortfolioProject.dbo.NashvilleHousing
+
+
 -- Vegetable Table Data Quality Check --
 Select * From Fruit_Veggie.vegetable_prices		-- Missing Values
 Where RetailPrice='Null' or Yield='Null';
