@@ -1,0 +1,79 @@
+-- Vegetable Table Data Quality Check --
+Select * From Fruit_Veggie.vegetable_prices		-- Missing Values
+Where RetailPrice='Null' or Yield='Null';
+
+Select Vegetable, Form, Count(*) From Fruit_Veggie.vegetable_prices		-- Duplicates check
+Group By Vegetable, Form
+Having Count(*)>1;
+
+
+-- Table that demonstrates Price Range for each Form of Vegetable --
+Select Form, Min(RetailPrice) AS min_price,
+			Max(RetailPrice) AS max_price,
+			AVG(RetailPrice) AS avg_price
+From Fruit_Veggie.vegetable_prices
+Group By Form;
+
+-- Table that demonstrates the 3 most expensive Vegetables --
+Select Vegetable, RetailPrice, RetailPriceUnit
+From Fruit_Veggie.vegetable_prices
+Order By RetailPrice Desc
+Limit 3;
+
+-- Most Expensive Form of Vegetable on Average
+Select Form, Avg(RetailPrice), RetailPriceUnit
+From Fruit_Veggie.vegetable_prices
+Group By Form
+Order By Avg(RetailPrice) Desc;
+
+-- Price variation of Vegetable according to form
+Select vegetable, Form, Avg(RetailPrice), RetailPriceUnit
+From Fruit_Veggie.vegetable_prices
+Group By Vegetable, Form
+Order By Vegetable;
+
+-- Affordability
+-- Table demonstrates vegetables that provide the best value for the usable produce
+Select Vegetable, Form, Avg(CupEquivalentPrice) AS Avg_Cup_Price
+From Fruit_Veggie.vegetable_prices
+Group By Form, Vegetable
+Order By Avg_Cup_Price ASC
+Limit 5; -- (Dried Vegetables are the items that provide the best value for usable produce)
+
+-- Fresh vs Canned: Which is more affordable?
+Select Vegetable, Form, Avg(CupEquivalentPrice) AS Avg_Cup_Price
+From Fruit_Veggie.vegetable_prices
+Where Form='Canned' OR Form='Fresh'
+Group By Form, Vegetable
+Order By Avg_cup_Price; -- It appears that fresh Vegetables are predomantly more affordable than canned
+
+-- Higher Yield correlated to Lower Price?-- Vegetable
+Select Vegetable, Form, Avg(Yield) AS Avg_Yield, Avg(RetailPrice) AS Avg_Retail_Price
+From Fruit_Veggie.vegetable_prices
+Group By Form, Vegetable
+Order By Avg_Yield DESC; -- By Graphics an answer might be obtained
+
+-- Ranking of each Price per cup for each Form
+Select *
+From(
+Select Vegetable, Form,
+	Rank() OVER (Partition By Form Order By CupEquivalentPrice DESC) AS Vegetable_Ranking
+From Fruit_Veggie.vegetable_prices)
+As X
+Where Vegetable_Ranking<=3; -- Final table will provide the 3 most affordable fruits according to price per cup
+
+-- Price Outliers (Application of CTEs)
+With O AS
+(Select Form, Avg(RetailPrice) AS Outlier_Avg_Price -- CTE will group the average retail price by form
+From Fruit_Veggie.vegetable_prices
+Group By Form
+)
+Select V.Fruit, V.Form, V.RetailPrice, O.Outlier_Avg_Price
+From Fruit_Veggie.fruit_prices AS V		-- Fruit table renamed to F
+Join O ON V.Form=O.Form					-- Both tables are joined by the common Form column
+Where V.RetailPrice>1.5*O.Outlier_Avg_Price;	-- Calculation of the Outlier
+
+-- Vegetable Selection --
+Select * from Fruit_Veggie.vegetable_prices;
+
+Show Variables Where Variable_name="Hostname" OR Variable_name = 'port'
