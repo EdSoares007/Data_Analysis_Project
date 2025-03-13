@@ -28,7 +28,7 @@ By using Pivot Tables, the KPIs were addressed.
 With each Pivot Table, a chart was created for smoother analysis and to further assemble into the final dashboard.
 
 ## Dashboard
-![Screenshot (495)](https://github.com/user-attachments/assets/17a62479-5cdc-4be7-9373-f264201d276e)
+![IMDB_Dashboard](https://github.com/EdSoares007/Data_Analysis_Project/blob/main/IMDB_Dashboard.png)
 
 ## Project Insights
 - Despite an increase in releases each month, the ROI was below expectations.
