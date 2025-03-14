@@ -40,4 +40,4 @@ With each Pivot Table, a chart was created for smoother analysis and to further 
 
 ## Conclusion
 Based on the results of this analysis, as a business venture, for a higher return on initial investment when creating a movie, one should aim to release it in the fourth quarter of the year. It should also be noted that the ideal runtime should be either 45 or 195 minutes.
-Additionally, this dataset was highly focused on movies originating from the United States.
+Additionally, this dataset was highly focused on movies originating from the United States. For future analysis, it is recommended to diversify the origins of the movies analyzed.
